@@ -1,0 +1,36 @@
+<?php
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\KategoriController;
+use App\Http\Controllers\Api\PelangganController;
+use App\Http\Controllers\Api\ProdukController;
+use Illuminate\Support\Facades\Route;
+
+
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(function (){
+    Route::get('/profile', [AuthController::class, 'profile']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+
+    //kategori
+    Route::get('/kategori', [KategoriController::class, 'index']);
+    Route::post('/kategori', [KategoriController::class, 'store']);
+    Route::put('/kategori/{id}', [KategoriController::class, 'update']);
+    Route::delete('/kategori/{id}', [KategoriController::class, 'destroy']);
+
+    //Pelanggan
+    Route::get('/pelanggan',  [PelangganController::class, 'index']);
+    Route::post('/pelanggan', [PelangganController::class, 'store']);
+    Route::put('/pelanggan/{id}', [PelangganController::class, 'update']);
+    Route::delete('/pelanggan/{id}', [PelangganController::class, 'destroy']);
+
+    //Produk
+    Route::get('/produk', [ProdukController::class, 'index']);
+    Route::post('/produk', [ProdukController::class, 'store']);
+    Route::get('/produk/{id}', [ProdukController::class, 'show']);
+    Route::put('/produk/{id}', [ProdukController::class, 'update']);
+    Route::delete('/produk/{id}', [ProdukController::class, 'destroy']);
+});
