@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -8,20 +9,28 @@ class Produk extends Model
 {
     use HasFactory;
 
+    // Menentukan nama tabel & primary key sesuai database
+    protected $table = 'produk';
+    protected $primaryKey = 'id_barang';
 
     protected $fillable = [
-        'nama_barang', 'harga_barang', 'deskripsi', 'stok', 'id_kategori',
+        'nama_barang',
+        'harga_barang',
+        'deskripsi',
+        'stok',
+        'id_kategori',
     ];
-    public $timestamps    = true;
 
+    public $timestamps = false;
 
     // belongsTo: satu produk HANYA punya SATU kategori
-    public function kategori()
+    public function pesanan()
     {
-        return $this->belongsTo(Kategori::class, 'id_kategori',);
+        return $this->belongsToMany(
+            Pesanan::class,
+            'detail_pesanan',
+            'id_produk',
+            'id_pesanan'
+        )->withPivot('jumlah');
     }
-
-    // ada method lain dibawah ini
-    ....
-
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\KategoriController;
 use App\Http\Controllers\Api\PelangganController;
 use App\Http\Controllers\Api\ProdukController;
+use App\Http\Controllers\Api\PesananController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -33,4 +34,11 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::get('/produk/{id}', [ProdukController::class, 'show']);
     Route::put('/produk/{id}', [ProdukController::class, 'update']);
     Route::delete('/produk/{id}', [ProdukController::class, 'destroy']);
+
+    //Pesanan
+    Route::get('/pesanan', [PesananController::class, 'index']);
+    Route::post('/pesanan', [PesananController::class, 'store']);
+    Route::get('/pesanan/{id}', [PesananController::class, 'show']);
+    Route::put('/pesanan/{id}', [PesananController::class, 'update']);
+    Route::delete('/pesanan/{id}', [PesananController::class, 'destroy']);
 });
