@@ -9,9 +9,9 @@ class Produk extends Model
 {
     use HasFactory;
 
-    // Menentukan nama tabel & primary key sesuai database
-    protected $table = 'produk';
-    protected $primaryKey = 'id_barang';
+    // Menyesuaikan dengan tabel yang sudah dibuat migration
+    protected $table = 'produks';
+    // protected $primaryKey = 'id_barang'; // dihapus karena pakai id biasa
 
     protected $fillable = [
         'nama_barang',
@@ -21,9 +21,15 @@ class Produk extends Model
         'id_kategori',
     ];
 
-    public $timestamps = false;
+    public $timestamps = true;   // diganti dari false
 
-    // belongsTo: satu produk HANYA punya SATU kategori
+    // Relasi ke Kategori (ini yang dipakai di controller: with('kategori'))
+    public function kategori()
+    {
+        return $this->belongsTo(Kategori::class, 'id_kategori');
+    }
+
+    // Relasi ke Pesanan (many-to-many)
     public function pesanan()
     {
         return $this->belongsToMany(

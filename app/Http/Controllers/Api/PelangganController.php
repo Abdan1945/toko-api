@@ -12,9 +12,7 @@ class PelangganController extends Controller
     public function index()
     {
         try {
-            // Mengganti latest() menjadi orderBy('id_pelanggan', 'desc')
-            // agar tidak mencari kolom created_at yang tidak ada di database
-            $pelanggan = Pelanggan::orderBy('id_pelanggan', 'desc')->get();
+            $pelanggan = Pelanggan::latest()->get();   // sekarang bisa pakai latest() lagi
 
             return response()->json([
                 'status'  => true,

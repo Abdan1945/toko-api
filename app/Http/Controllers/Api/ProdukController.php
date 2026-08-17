@@ -12,7 +12,6 @@ class ProdukController extends Controller
     public function index()
     {
         try {
-            // eager load relasi kategori, biar tidak query berkali-kali (N+1 problem)
             $produk = Produk::with('kategori')->latest()->get();
 
             return response()->json([
@@ -29,11 +28,11 @@ class ProdukController extends Controller
     {
         try {
             $request->validate([
-                'nama_barang'  => 'required|unique:produk,nama_barang',
+                'nama_barang'  => 'required|unique:produks,nama_barang',
                 'harga_barang' => 'required|integer',
                 'deskripsi'    => 'required',
                 'stok'         => 'required|integer',
-                'id_kategori'  => 'required|exists:kategori,id_kategori',
+                'id_kategori'  => 'required|exists:kategoris,id',
             ]);
 
             $produk = Produk::create($request->only([
@@ -66,35 +65,34 @@ class ProdukController extends Controller
     }
 
     public function update(Request $request, $id)
-{
-    try {
-        $produk = Produk::find($id);
-        if (! $produk) {
-            return response()->json(['status' => false, 'message' => 'Produk tidak ditemukan.'], 404);
+    {
+        try {
+            $produk = Produk::find($id);
+            if (! $produk) {
+                return response()->json(['status' => false, 'message' => 'Produk tidak ditemukan.'], 404);
+            }
+
+            $request->validate([
+                'nama_barang'  => 'required|unique:produks,nama_barang,' . $id,
+                'harga_barang' => 'required|integer',
+                'deskripsi'    => 'required',
+                'stok'         => 'required|integer',
+                'id_kategori'  => 'required|exists:kategoris,id',
+            ]);
+
+            $produk->update($request->only([
+                'nama_barang', 'harga_barang', 'deskripsi', 'stok', 'id_kategori',
+            ]));
+
+            return response()->json([
+                'status'  => true,
+                'message' => 'Produk berhasil diperbarui.',
+                'data'    => $produk->load('kategori'),
+            ]);
+        } catch (Exception $e) {
+            return response()->json(['status' => false, 'message' => $e->getMessage()], 500);
         }
-
-        $request->validate([
-            // Menunjuk ke tabel 'produk' dan primary key 'id_barang'
-            'nama_barang'  => 'required|unique:produk,nama_barang,' . $id . ',id_barang',
-            'harga_barang' => 'required|integer',
-            'deskripsi'    => 'required',
-            'stok'         => 'required|integer',
-            'id_kategori'  => 'required|exists:kategori,id_kategori',
-        ]);
-
-        $produk->update($request->only([
-            'nama_barang', 'harga_barang', 'deskripsi', 'stok', 'id_kategori',
-        ]));
-
-        return response()->json([
-            'status'  => true,
-            'message' => 'Produk berhasil diperbarui.',
-            'data'    => $produk->load('kategori'),
-        ]);
-    } catch (Exception $e) {
-        return response()->json(['status' => false, 'message' => $e->getMessage()], 500);
     }
-}
 
     public function destroy($id)
     {

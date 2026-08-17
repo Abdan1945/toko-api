@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\KategoriController;
 use App\Http\Controllers\Api\PelangganController;
 use App\Http\Controllers\Api\ProdukController;
 use App\Http\Controllers\Api\PesananController;
+use App\Http\Controllers\Api\PublicController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -41,4 +42,13 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::get('/pesanan/{id}', [PesananController::class, 'show']);
     Route::put('/pesanan/{id}', [PesananController::class, 'update']);
     Route::delete('/pesanan/{id}', [PesananController::class, 'destroy']);
+
+});
+
+    Route::prefix('public')->group(function () {
+    Route::get('/produk', [PublicController::class, 'produk']);
+    Route::get('/produk/{id}', [PublicController::class, 'detailProduk']);
+    Route::get('/kategori', [PublicController::class, 'kategori']);
+    Route::get('/kategori/{id}/produk', [PublicController::class, 'produkByKategori']);
+    Route::get('/search', [PublicController::class, 'search']);
 });

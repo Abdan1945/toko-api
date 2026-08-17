@@ -9,10 +9,10 @@ class Pelanggan extends Model
 {
     use HasFactory;
 
-    protected $table = 'pelanggan';
-    protected $primaryKey = 'id_pelanggan';
+    protected $table = 'pelanggans';          // diganti dari 'pelanggan'
+    // protected $primaryKey = 'id_pelanggan'; // dihapus, karena pakai id biasa
 
-    public $timestamps = false;
+    public $timestamps = true;               // diganti dari false, karena ada timestamps
 
     protected $fillable = ['nama_pelanggan', 'alamat'];
 

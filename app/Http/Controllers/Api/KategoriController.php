@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
@@ -26,7 +27,7 @@ class KategoriController extends Controller
     {
         try {
             $request->validate([
-                'nama_kategori' => 'required|unique:kategori,nama_kategori',
+                'nama_kategori' => 'required|unique:kategoris,nama_kategori',
             ]);
 
             $kategori = Kategori::create([
@@ -52,7 +53,7 @@ class KategoriController extends Controller
             }
 
             $request->validate([
-               'nama_kategori' => 'required|unique:kategori,nama_kategori,' . $id . ',id_kategori'
+                'nama_kategori' => 'required|unique:kategoris,nama_kategori,' . $id,
             ]);
 
             $kategori->nama_kategori = $request->nama_kategori;

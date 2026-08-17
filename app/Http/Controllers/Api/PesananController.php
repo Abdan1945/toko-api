@@ -12,7 +12,6 @@ class PesananController extends Controller
     public function index()
     {
         try {
-
             $pesanan = Pesanan::with([
                 'pelanggan',
                 'produk'
@@ -23,27 +22,23 @@ class PesananController extends Controller
                 'message' => 'Data pesanan berhasil diambil.',
                 'data' => $pesanan,
             ], 200);
-
         } catch (Exception $e) {
-
             return response()->json([
                 'status' => false,
                 'message' => $e->getMessage(),
             ], 500);
-
         }
     }
 
     public function store(Request $request)
     {
         try {
-
             $request->validate([
-                'id_pelanggan' => 'required|exists:pelanggans,id_pelanggan',
+                'id_pelanggan' => 'required|exists:pelanggans,id',
                 'tanggal' => 'required|date',
 
                 'items' => 'required|array',
-                'items.*.id_barang' => 'required|exists:produks,id_barang',
+                'items.*.id_barang' => 'required|exists:produks,id',
                 'items.*.jumlah' => 'required|integer|min:1',
             ]);
 
@@ -58,11 +53,9 @@ class PesananController extends Controller
             $produk = [];
 
             foreach ($request->items as $item) {
-
                 $produk[$item['id_barang']] = [
                     'jumlah' => $item['jumlah']
                 ];
-
             }
 
             // ATTACH
@@ -76,71 +69,59 @@ class PesananController extends Controller
                     'produk'
                 ),
             ], 201);
-
         } catch (Exception $e) {
-
             return response()->json([
                 'status' => false,
                 'message' => $e->getMessage(),
             ], 500);
-
         }
     }
 
     public function show($id)
     {
         try {
-
             $pesanan = Pesanan::with([
                 'pelanggan',
                 'produk'
             ])->find($id);
 
             if (! $pesanan) {
-
                 return response()->json([
                     'status' => false,
                     'message' => 'Pesanan tidak ditemukan.',
                 ], 404);
-
             }
 
             return response()->json([
                 'status' => true,
                 'data' => $pesanan,
             ]);
-
         } catch (Exception $e) {
-
             return response()->json([
                 'status' => false,
                 'message' => $e->getMessage(),
             ], 500);
-
         }
     }
 
     public function update(Request $request, $id)
     {
         try {
-
             $pesanan = Pesanan::find($id);
 
             if (! $pesanan) {
-
                 return response()->json([
                     'status' => false,
                     'message' => 'Pesanan tidak ditemukan.',
                 ], 404);
-
             }
 
             $request->validate([
-                'id_pelanggan' => 'required|exists:pelanggans,id_pelanggan',
+                'id_pelanggan' => 'required|exists:pelanggans,id',
                 'tanggal' => 'required|date',
 
                 'items' => 'required|array',
-                'items.*.id_barang' => 'required|exists:produks,id_barang',
+                'items.*.id_barang' => 'required|exists:produks,id',
                 'items.*.jumlah' => 'required|integer|min:1',
             ]);
 
@@ -153,11 +134,9 @@ class PesananController extends Controller
             $produk = [];
 
             foreach ($request->items as $item) {
-
                 $produk[$item['id_barang']] = [
                     'jumlah' => $item['jumlah']
                 ];
-
             }
 
             // SYNC
@@ -171,30 +150,24 @@ class PesananController extends Controller
                     'produk'
                 ),
             ]);
-
         } catch (Exception $e) {
-
             return response()->json([
                 'status' => false,
                 'message' => $e->getMessage(),
             ], 500);
-
         }
     }
 
     public function destroy($id)
     {
         try {
-
             $pesanan = Pesanan::find($id);
 
             if (! $pesanan) {
-
                 return response()->json([
                     'status' => false,
                     'message' => 'Pesanan tidak ditemukan.',
                 ], 404);
-
             }
 
             // DETACH
@@ -206,14 +179,11 @@ class PesananController extends Controller
                 'status' => true,
                 'message' => 'Pesanan berhasil dihapus.',
             ]);
-
         } catch (Exception $e) {
-
             return response()->json([
                 'status' => false,
                 'message' => $e->getMessage(),
             ], 500);
-
         }
     }
 }
