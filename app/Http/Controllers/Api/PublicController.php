@@ -1,5 +1,8 @@
 <?php
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2b75705 (Project API Selesai)
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
@@ -16,12 +19,17 @@ class PublicController extends Controller
             $produk = DB::table('produks')
                 ->join('kategoris', 'produks.id_kategori', '=', 'kategoris.id')
                 ->select(
+<<<<<<< HEAD
                     'produks.id',
                     'produks.nama_barang',
                     'produks.harga_barang',
                     'produks.stok',
                     'produks.deskripsi',
                     'kategoris.nama_kategori'
+=======
+                    'produks.id', 'produks.nama_barang', 'produks.harga_barang',
+                    'produks.stok', 'produks.deskripsi', 'kategoris.nama_kategori'
+>>>>>>> 2b75705 (Project API Selesai)
                 )
                 ->paginate(10);
 
@@ -97,4 +105,8 @@ class PublicController extends Controller
             return response()->json(['status' => false, 'message' => $e->getMessage()], 500);
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 2b75705 (Project API Selesai)

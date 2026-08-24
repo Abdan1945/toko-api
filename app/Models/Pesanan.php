@@ -9,8 +9,13 @@ class Pesanan extends Model
 {
     use HasFactory;
 
+<<<<<<< HEAD
     protected $table = 'pesanan';
     protected $primaryKey = 'id_pesanan';
+=======
+    protected $table = 'pesanan';                 // ← wajib (tanpa s)
+    protected $primaryKey = 'id_pesanan';         // ← wajib
+>>>>>>> 2b75705 (Project API Selesai)
     protected $fillable = ['id_pelanggan', 'tanggal'];
     public $timestamps = false;
 
@@ -27,7 +32,14 @@ class Pesanan extends Model
             Produk::class,
             'detail_pesanan',
             'id_pesanan',
+<<<<<<< HEAD
             'id_barang'
         )->withPivot('jumlah');
     }
 }
+=======
+            'id_barang'              // ← harus id_barang, bukan id_produk
+        )->withPivot('jumlah');
+    }
+}
+>>>>>>> 2b75705 (Project API Selesai)

@@ -52,3 +52,11 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::get('/kategori/{id}/produk', [PublicController::class, 'produkByKategori']);
     Route::get('/search', [PublicController::class, 'search']);
 });
+
+Route::prefix('public')->group(function () {
+    Route::get('/produk', [PublicController::class, 'produk']);
+    Route::get('/produk/{id}', [PublicController::class, 'detailProduk']);
+    Route::get('/kategori', [PublicController::class, 'kategori']);
+    Route::get('/kategori/{id}/produk', [PublicController::class, 'produkByKategori']);
+    Route::get('/search', [PublicController::class, 'search']);
+});

@@ -6,20 +6,32 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
-        // Pengecekan: Hanya buat tabel jika 'pesanan' BELUM ADA
-        if (!Schema::hasTable('pesanan')) {
-            Schema::create('pesanan', function (Blueprint $table) {
-                $table->id('id_pesanan');
-                $table->foreignId('id_pelanggan')->nullable()->constrained('pelanggan', 'id_pelanggan');
-                $table->date('tanggal');
-            });
-        }
+        Schema::create('pesanans', function (Blueprint $table) {
+            $table->id('id');
+            $table->foreignId('id_pelanggan')->nullable()->constrained('pelanggans');
+            $table->date('tanggal');
+        });
+
+        // table pivot untuk relasi many to many antara pesanan dan produk
+        Schema::create('detail_pesanan', function (Blueprint $table) {
+            $table->id('id');
+            $table->foreignId('id_pesanan')->nullable()->constrained('pesanans');
+            $table->foreignId('id_produk')->nullable()->constrained('produks');
+            $table->integer('jumlah');
+        });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
-        Schema::dropIfExists('pesanan');
+        Schema::dropIfExists('pesanans');
+        Schema::dropIfExists('detail_pesanan');
     }
 };

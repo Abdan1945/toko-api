@@ -12,7 +12,12 @@ class PelangganController extends Controller
     public function index()
     {
         try {
+<<<<<<< HEAD
             $pelanggan = Pelanggan::latest()->get();   // sekarang bisa pakai latest() lagi
+=======
+            // Diganti dari id_pelanggan menjadi id (sesuai kolom di database)
+            $pelanggan = Pelanggan::orderBy('id', 'desc')->get();
+>>>>>>> 2b75705 (Project API Selesai)
 
             return response()->json([
                 'status'  => true,
