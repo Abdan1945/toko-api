@@ -12,12 +12,7 @@ class PelangganController extends Controller
     public function index()
     {
         try {
-<<<<<<< HEAD
-            $pelanggan = Pelanggan::latest()->get();   // sekarang bisa pakai latest() lagi
-=======
-            // Diganti dari id_pelanggan menjadi id (sesuai kolom di database)
-            $pelanggan = Pelanggan::orderBy('id', 'desc')->get();
->>>>>>> 2b75705 (Project API Selesai)
+            $pelanggan = Pelanggan::latest()->get();
 
             return response()->json([
                 'status'  => true,
@@ -34,11 +29,15 @@ class PelangganController extends Controller
         try {
             $request->validate([
                 'nama_pelanggan' => 'required',
+                'email'          => 'nullable|email|unique:pelanggans,email',
+                'no_telepon'     => 'nullable|unique:pelanggans,no_telepon',
                 'alamat'         => 'required',
             ]);
 
             $pelanggan = Pelanggan::create([
                 'nama_pelanggan' => $request->nama_pelanggan,
+                'email'          => $request->email,
+                'no_telepon'     => $request->no_telepon,
                 'alamat'         => $request->alamat,
             ]);
 
@@ -56,24 +55,25 @@ class PelangganController extends Controller
     {
         try {
             $pelanggan = Pelanggan::find($id);
-            if (! $pelanggan) {
-                return response()->json(['status' => false, 'message' => 'data pelanggan tidak ada'], 404);
+            if (!$pelanggan) {
+                return response()->json(['status' => false, 'message' => 'Pelanggan tidak ditemukan'], 404);
             }
 
             $request->validate([
                 'nama_pelanggan' => 'required',
+                // Abaikan ID pelanggan ini agar validasi unique tidak error saat update
+                'email'          => 'nullable|email|unique:pelanggans,email,' . $id,
+                'no_telepon'     => 'nullable|unique:pelanggans,no_telepon,' . $id,
                 'alamat'         => 'required',
             ]);
 
-            $pelanggan->nama_pelanggan = $request->nama_pelanggan;
-            $pelanggan->alamat         = $request->alamat;
-            $pelanggan->save();
+            $pelanggan->update($request->all());
 
             return response()->json([
                 'status'  => true,
-                'message' => 'data pelanggan berhasil diedit',
-                'data'    => $pelanggan,
-            ], 200);
+                'message' => 'Data pelanggan berhasil diperbarui',
+                'data'    => $pelanggan
+            ]);
         } catch (Exception $e) {
             return response()->json(['status' => false, 'message' => $e->getMessage()], 500);
         }

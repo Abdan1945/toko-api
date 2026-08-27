@@ -38,36 +38,28 @@ class PesananController extends Controller
                 'tanggal' => 'required|date',
 
                 'items' => 'required|array',
-                'items.*.id_barang' => 'required|exists:produks,id',
+                'items.*.id_produk' => 'required|exists:produks,id',
                 'items.*.jumlah' => 'required|integer|min:1',
             ]);
 
             $pesanan = new Pesanan;
-
             $pesanan->id_pelanggan = $request->id_pelanggan;
             $pesanan->tanggal = $request->tanggal;
-
             $pesanan->save();
 
-            // Siapkan data produk dan jumlah
             $produk = [];
-
             foreach ($request->items as $item) {
-                $produk[$item['id_barang']] = [
+                $produk[$item['id_produk']] = [
                     'jumlah' => $item['jumlah']
                 ];
             }
 
-            // ATTACH
             $pesanan->produk()->attach($produk);
 
             return response()->json([
                 'status' => true,
                 'message' => 'Pesanan berhasil ditambahkan.',
-                'data' => $pesanan->load(
-                    'pelanggan',
-                    'produk'
-                ),
+                'data' => $pesanan->load('pelanggan', 'produk'),
             ], 201);
         } catch (Exception $e) {
             return response()->json([
@@ -80,10 +72,7 @@ class PesananController extends Controller
     public function show($id)
     {
         try {
-            $pesanan = Pesanan::with([
-                'pelanggan',
-                'produk'
-            ])->find($id);
+            $pesanan = Pesanan::with(['pelanggan', 'produk'])->find($id);
 
             if (! $pesanan) {
                 return response()->json([
@@ -121,34 +110,27 @@ class PesananController extends Controller
                 'tanggal' => 'required|date',
 
                 'items' => 'required|array',
-                'items.*.id_barang' => 'required|exists:produks,id',
+                'items.*.id_produk' => 'required|exists:produks,id',
                 'items.*.jumlah' => 'required|integer|min:1',
             ]);
 
             $pesanan->id_pelanggan = $request->id_pelanggan;
             $pesanan->tanggal = $request->tanggal;
-
             $pesanan->save();
 
-            // Siapkan data produk dan jumlah
             $produk = [];
-
             foreach ($request->items as $item) {
-                $produk[$item['id_barang']] = [
+                $produk[$item['id_produk']] = [
                     'jumlah' => $item['jumlah']
                 ];
             }
 
-            // SYNC
             $pesanan->produk()->sync($produk);
 
             return response()->json([
                 'status' => true,
                 'message' => 'Pesanan berhasil diperbarui.',
-                'data' => $pesanan->load(
-                    'pelanggan',
-                    'produk'
-                ),
+                'data' => $pesanan->load('pelanggan', 'produk'),
             ]);
         } catch (Exception $e) {
             return response()->json([
@@ -170,9 +152,7 @@ class PesananController extends Controller
                 ], 404);
             }
 
-            // DETACH
             $pesanan->produk()->detach();
-
             $pesanan->delete();
 
             return response()->json([

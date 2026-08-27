@@ -12,7 +12,8 @@ class KategoriController extends Controller
     public function index()
     {
         try {
-            $kategori = Kategori::latest()->get();
+            // Mengubah latest() menjadi oldest() agar data baru ada di bawah
+            $kategori = Kategori::oldest()->get();
             return response()->json([
                 'status'  => true,
                 'message' => 'Data Kategori berhasil diambil',

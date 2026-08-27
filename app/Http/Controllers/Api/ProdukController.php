@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
@@ -12,6 +11,7 @@ class ProdukController extends Controller
     public function index()
     {
         try {
+            // eager load relasi kategori, biar tidak query berkali-kali (N+1 problem)
             $produk = Produk::with('kategori')->latest()->get();
 
             return response()->json([

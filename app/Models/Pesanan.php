@@ -9,13 +9,11 @@ class Pesanan extends Model
 {
     use HasFactory;
 
-<<<<<<< HEAD
-    protected $table = 'pesanan';
-    protected $primaryKey = 'id_pesanan';
-=======
-    protected $table = 'pesanan';                 // ← wajib (tanpa s)
-    protected $primaryKey = 'id_pesanan';         // ← wajib
->>>>>>> 2b75705 (Project API Selesai)
+    protected $table = 'pesanans';
+
+    // PERBAIKAN: Ubah id_pesanan menjadi id (sesuai kolom primary key MySQL)
+    protected $primaryKey = 'id';
+
     protected $fillable = ['id_pelanggan', 'tanggal'];
     public $timestamps = false;
 
@@ -31,15 +29,8 @@ class Pesanan extends Model
         return $this->belongsToMany(
             Produk::class,
             'detail_pesanan',
-            'id_pesanan',
-<<<<<<< HEAD
-            'id_barang'
+            'id_pesanan', // Foreign key di tabel detail_pesanan
+            'id_produk'
         )->withPivot('jumlah');
     }
 }
-=======
-            'id_barang'              // ← harus id_barang, bukan id_produk
-        )->withPivot('jumlah');
-    }
-}
->>>>>>> 2b75705 (Project API Selesai)
