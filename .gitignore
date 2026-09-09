@@ -1,27 +1,29 @@
+# Logs & Environment
+logs
 *.log
 .DS_Store
 .env
-.env.backup
-.env.production
-.phpactor.json
-.phpunit.result.cache
-/.codex
-/.cursor/
-/.idea
-/.nova
-/.phpunit.cache
-/.vscode
-/.zed
-/auth.json
+.env.*
+npm-debug.log*
+yarn-debug.log*
+
+# Dependencies & Build (Backend + Frontend)
+/vendor
 /node_modules
+dist
+dist-ssr
 /public/build
-/public/fonts-manifest.dev.json
 /public/hot
 /public/storage
-/storage/*.key
-/storage/pail
-/vendor
-_ide_helper.php
-Homestead.json
-Homestead.yaml
+
+# IDE & Editor
+.idea
+.vscode
 Thumbs.db
+*.suo
+
+# Testing & Cache
+coverage
+.phpunit.result.cache
+/.phpunit.cache
+.eslintcache
